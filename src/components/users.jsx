@@ -29,7 +29,7 @@ const wordsRefactor = number => {
       92 93 94
       */
       for (let d = 2; d < 10; d += 1) {
-        if (digit == (d + '2') || digit == (d + '3') || digit == (d + '4')) {
+        if (digit === Number(d + '2') || digit === Number(d + '3') || digit === Number(d + '4')) {
           return 'а';
         }
       }
@@ -59,7 +59,7 @@ const createTable = (data, handler) => {
   const addDataToTable = response => (
     response.map(user => (
       <tr key={user._id}>
-        <td scope="row">{user.name}</td>
+        <td>{user.name}</td>
         <td>{createQualities(user.qualities)}</td>
         <td>{user.profession.name}</td>
         <td>{user.completedMeetings}</td>
