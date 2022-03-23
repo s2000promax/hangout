@@ -29,7 +29,9 @@ const wordsRefactor = number => {
       92 93 94
       */
       for (let d = 2; d < 10; d += 1) {
-        if (digit === Number(d + '2') || digit === Number(d + '3') || digit === Number(d + '4')) {
+        if (digit === Number(d + '2')
+          || digit === Number(d + '3')
+          || digit === Number(d + '4')) {
           return 'а';
         }
       }
