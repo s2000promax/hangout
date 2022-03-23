@@ -3,6 +3,7 @@ import api from '../api';
 
 const wordsRefactor = number => {
   if (!isNaN(number)) {
+    number = Math.abs(number); //Возможно в будующем вынесем эту функцию в утилиты. Задел на универсальность
     if (String(number).length <= 1) {
       /*
       2 человека
@@ -13,7 +14,7 @@ const wordsRefactor = number => {
         return 'а';
       }
     } else {
-      const numberToString = String(Math.abs(number)).split('');
+      const numberToString = String(number).split('');
       const digit = String(number).length >= 3
         ? Number(numberToString.splice(numberToString.length - 2, numberToString.length).join(''))
         : number;
