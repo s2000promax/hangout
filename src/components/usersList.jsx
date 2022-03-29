@@ -5,17 +5,18 @@ import User from './user';
 
 const UsersList = ({users, ...rest}) => {
 
-  return (<table className="table">
+  return (
+    <table className="table">
       <thead>
       <tr>
         {createHeaders(tableHeaders)}
       </tr>
       </thead>
       <tbody>
-        <User
-          users={users}
-          {...rest}
-        />
+      <User
+        users={users}
+        {...rest}
+      />
       </tbody>
     </table>
   );

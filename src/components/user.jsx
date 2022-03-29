@@ -4,15 +4,16 @@ import Bookmark from './bookmark';
 
 const User = ({users, ...rest}) => {
   const {onDeleteUser} = rest;
-  return (<>
-    {users.map(user => (
+  return (
+    <>
+      {users.map(user => (
         <tr key={user._id}>
           <td>{user.name}</td>
           <td>
             <Qualities
-            color={user.qualities.color}
-            name={user.qualities.name}
-            id={user.qualities._id}
+              color={user.qualities.color}
+              name={user.qualities.name}
+              id={user.qualities._id}
             />
           </td>
           <td>{user.profession.name}</td>
