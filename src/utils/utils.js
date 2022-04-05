@@ -2,7 +2,7 @@ import React from 'react';
 
 export const getEndOfWord = (number, endOfWord) => {
   if (!isNaN(number)) {
-    number = Math.abs(number); //Возможно в будующем вынесем эту функцию в утилиты. Задел на универсальность
+    number = Math.abs(number); // Возможно в будующем вынесем эту функцию в утилиты. Задел на универсальность
     if (String(number).length <= 1) {
       /*
       2 человека
@@ -37,7 +37,7 @@ export const getEndOfWord = (number, endOfWord) => {
     }
   }
   return null;
-}
+};
 
 /**
  * Function create headers columns of table
