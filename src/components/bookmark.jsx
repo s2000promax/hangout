@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Bookmark = ({status, ...rest}) => {
-  const {onToggleBookmark, userId} = rest;
+const Bookmark = ({ status, ...rest }) => {
+  const { onToggleBookmark, userId } = rest;
 
   return (
     <i
@@ -10,6 +11,10 @@ const Bookmark = ({status, ...rest}) => {
     >
     </i>
   );
-}
+};
+
+Bookmark.propTypes = {
+  status: PropTypes.bool
+};
 
 export default Bookmark;

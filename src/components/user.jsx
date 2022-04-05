@@ -1,9 +1,10 @@
 import React from 'react';
 import Qualities from './qualities';
 import Bookmark from './bookmark';
+import PropTypes from 'prop-types';
 
-const User = ({users, ...rest}) => {
-  const {onDeleteUser} = rest;
+const User = ({ users, ...rest }) => {
+  const { onDeleteUser } = rest;
   return (
     <>
       {users.map(user => (
@@ -33,6 +34,8 @@ const User = ({users, ...rest}) => {
       ))}
     </>
   );
-}
-
+};
+User.propTypes = {
+  users: PropTypes.array.isRequired
+};
 export default User;
