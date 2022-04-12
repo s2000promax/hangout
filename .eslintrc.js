@@ -21,6 +21,7 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always', { omitLastInOneLineBlock: true }],
     'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }],
-    'operator-linebreak': ['error', 'before']
+    'operator-linebreak': ['error', 'before'],
+    'no-extra-boolean-cast': 0
   }
 };

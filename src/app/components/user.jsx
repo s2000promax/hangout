@@ -28,14 +28,21 @@ const User = ({ users, ...rest }) => {
             />
           </td>
           <td>
-            <button className='btn btn-danger' onClick={() => onDeleteUser(user._id)}>delete</button>
+            <button
+              className='btn btn-danger'
+              onClick={() => onDeleteUser(user._id)}
+            >
+              delete
+            </button>
           </td>
         </tr>
       ))}
     </>
   );
 };
+
 User.propTypes = {
   users: PropTypes.array.isRequired
 };
+
 export default User;
