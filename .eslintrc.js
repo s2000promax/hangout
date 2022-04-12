@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     semi: ['error', 'always', { omitLastInOneLineBlock: true }],
+    'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }],
     'operator-linebreak': ['error', 'before']
   }
 };

@@ -20,7 +20,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <div className='d-flex'>
       <SearchStatus length={users.length}/>
       {!!users.length
         && <UsersList
@@ -29,7 +29,7 @@ const App = () => {
           onToggleBookmark={handleToggleBookmark}
         />
       }
-    </>
+    </div>
   );
 };
 
