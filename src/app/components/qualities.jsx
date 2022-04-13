@@ -11,6 +11,7 @@ const Qualities = ({ color, name, _id }) => {
     </span>
   );
 };
+
 Qualities.propTypes = {
   color: PropTypes.string,
   name: PropTypes.string,
