@@ -42,6 +42,23 @@ export const getEndOfWord = (number, endOfWord) => {
 /**
  * Function create headers columns of table
  * @param headers: Array of string
+ * @param callBackFunc: Event handler
  * @returns <jsx>
  */
-export const createHeaders = headers => headers.map((header, index) => <th scope="col" key={`id-${index}`}>{header}</th>);
+export const createHeaders = (headers, callBackFunc) => {
+  return Object.keys(headers)
+    .map((key, index) =>
+      key !== 'exceptions'
+        ? <th
+          scope="col"
+          key={`id-${index}`}
+          onClick={!headers.exceptions.some(el => el === key)
+            ? () => callBackFunc(key)
+            : null
+          }
+        >
+          {headers[key]}
+        </th>
+        : null
+    );
+};
