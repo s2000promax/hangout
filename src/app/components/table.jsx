@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Table = ({ onSort, selectedSort, columns, data, children }) => {
   return (
-    <table className="table">
+    <table className="table" style={{ width: '1000px' }}>
       {children || (
         <>
           <TableHeader {...{ onSort, selectedSort, columns }} />

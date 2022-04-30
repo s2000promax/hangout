@@ -12,7 +12,10 @@ const UserInfo = ({ id }) => {
 
   useEffect(() => {
     api.users.getById(id).then((userInfo) => {
-      if (Array.isArray(userInfo)) {
+      console.log('userInfo', userInfo);
+      if (!userInfo) {
+        history.push('/404');
+      } else if (Array.isArray(userInfo)) {
         setUser({}); // Заглушка на случай, если придет Массив
       } else {
         setUser(userInfo);
@@ -25,11 +28,11 @@ const UserInfo = ({ id }) => {
   };
   return (
     <>
-      {!user._id
-        ? <Loader />
+      {!user?._id
+        ? <Loader/>
         : <div className='card' style={{ width: '18rem' }}>
           <img src={avatar} className='card-img-top' alt='avatar'/>
-          <div className='card-body' >
+          <div className='card-body'>
             <h5 className='card-title'>{user.name}</h5>
             <h6 className='card-title'>Профессия: {user.profession.name} </h6>
           </div>
