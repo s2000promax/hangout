@@ -2,7 +2,7 @@ import React from 'react';
 import { getEndOfWord } from '../utils/utils';
 import PropTypes from 'prop-types';
 
-const SearchStatus = ({ count, users }) => {
+const SearchStatus = ({ count, users, isSearching }) => {
   if (!!count && !!users.length) {
     return (
       <span
@@ -16,7 +16,7 @@ const SearchStatus = ({ count, users }) => {
       <span
         className='badge btn-danger m-2 fs-5'
       >
-      В этой категории нет подходящих вариантов для тусовки
+      {!isSearching ? 'В этой категории нет подходящих вариантов для тусовки' : 'Нет совпадений по поиску'}
     </span>
     );
   }
@@ -31,7 +31,8 @@ const SearchStatus = ({ count, users }) => {
 
 SearchStatus.propTypes = {
   count: PropTypes.number,
-  users: PropTypes.array
+  users: PropTypes.array,
+  isSearching: PropTypes.bool
 };
 
 export default SearchStatus;
