@@ -48,20 +48,16 @@ const UsersList = () => {
   }, [selectedProfs]);
 
   const handleSearchChange = ({ target }) => {
+    const allowSymbolsRegEx = /[^а-яА-Яa-zA-Z0-9\s]+/gi;
+    const formatSymbols = target.value.replace(allowSymbolsRegEx, '');
     setSearchData(prevState => ({
       ...prevState,
-      [target.name]: target.value
+      [target.name]: formatSymbols
     }));
     if (selectedProfs) {
       clearFilter();
     }
   };
-
-  /*
-  useEffect(() => {
-    clearFilter();
-  }, [searchData]);
-   */
 
   const handleDelete = (userId) => {
     setUsers(users.filter(user => user._id !== userId));
