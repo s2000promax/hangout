@@ -7,6 +7,7 @@ import SearchStatus from './searchStatus';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 import Loader from './loader';
+import TextField from './textField';
 
 const UsersList = () => {
   const pageSize = 6;
@@ -18,6 +19,8 @@ const UsersList = () => {
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
 
   const [users, setUsers] = useState([]);
+
+  const [searchData, setSearchData] = useState({ search: '' });
 
   useEffect(() => {
     api.users.fetchAll().then((dataOfUsers) => {
@@ -44,6 +47,22 @@ const UsersList = () => {
     setCurrentPage(1);
   }, [selectedProfs]);
 
+  const handleSearchChange = ({ target }) => {
+    setSearchData(prevState => ({
+      ...prevState,
+      [target.name]: target.value
+    }));
+    if (selectedProfs) {
+      clearFilter();
+    }
+  };
+
+  /*
+  useEffect(() => {
+    clearFilter();
+  }, [searchData]);
+   */
+
   const handleDelete = (userId) => {
     setUsers(users.filter(user => user._id !== userId));
   };
@@ -61,26 +80,31 @@ const UsersList = () => {
     setCurrentPage(pageIndex);
   };
 
+  const searchingRegExp = new RegExp(searchData.search, 'gi');
   const filteredUsers = selectedProfs
     ? users.filter((user) =>
       JSON.stringify(user.profession) === JSON.stringify(selectedProfs))
-    : users;
+    : !!searchData.search
+        ? users.filter((user) => searchingRegExp.test(user.name))
+        : users;
 
   const count = filteredUsers.length;
   const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
 
   const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
-  const clearFilter = () => {
-    setSelectedProfs();
-  };
-
   if (!userCrop.length && count > 0) {
     setCurrentPage(prevPage => prevPage - 1);
   }
 
+  const clearFilter = () => {
+    setSelectedProfs();
+    setSearchData({ search: '' });
+  };
+
   const handleProfessionSelect = (item) => {
     setSelectedProfs(item);
+    setSearchData({ search: '' });
   };
 
   const handleSort = (item) => {
@@ -107,17 +131,27 @@ const UsersList = () => {
         </div>
       }
       <div className='d-flex flex-column'>
-        <SearchStatus {...{ count, users }}/>
+        <SearchStatus {...{ count, users, isSearching: !!searchData.search }}/>
+        <TextField
+          label=''
+          type='text'
+          name='search'
+          placeholder='Search...'
+          value={searchData.search}
+          onChange={handleSearchChange}
+        />
         {count > 0
-          && <UsersTable
-            {...{
-              users: userCrop,
-              onSort: handleSort,
-              selectedSort: sortBy,
-              onDeleteUser: handleDelete,
-              onToggleBookMark: handleToggleBookmark
-            }}
-          />
+          && <>
+            <UsersTable
+              {...{
+                users: userCrop,
+                onSort: handleSort,
+                selectedSort: sortBy,
+                onDeleteUser: handleDelete,
+                onToggleBookMark: handleToggleBookmark
+              }}
+            />
+          </>
         }
         <Pagination
           itemsCount={count}
