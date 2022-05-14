@@ -1,15 +1,15 @@
 import React from 'react';
-import UsersList from '../components/usersList';
+import UsersListPage from '../components/common/page/usersListPage';
+import UserPage from '../components/common/page/userPage';
 import { useParams } from 'react-router-dom';
-import UserInfo from '../components/userInfo';
 
 const Users = () => {
   const { userId } = useParams();
   return (
     <>
       {!!userId
-        ? <UserInfo id={userId} />
-        : <UsersList />
+        ? <UserPage id={userId} />
+        : <UsersListPage />
       }
     </>
   );

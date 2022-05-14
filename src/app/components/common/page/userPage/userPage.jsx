@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../api';
-import avatar from '../../assets/avatar.jpg';
-import Qualities from './qualities';
-import Loader from './loader';
+import api from '../../../../api';
+import avatar from '../../../../../assets/avatar.jpg';
+import Qualities from '../../../ui/qualities/qualities';
+import Loader from '../../../ui/loader';
 
-const UserInfo = ({ id }) => {
+const UserPage = ({ id }) => {
   const history = useHistory();
   const [user, setUser] = useState({});
 
   useEffect(() => {
     api.users.getById(id).then((userInfo) => {
-      console.log('userInfo', userInfo);
       if (!userInfo) {
         history.push('/404');
       } else if (Array.isArray(userInfo)) {
@@ -24,7 +23,7 @@ const UserInfo = ({ id }) => {
   }, []);
 
   const handleReturnToUsersPage = () => {
-    history.push('/users');
+    history.push(`${id}/edit`);
   };
   return (
     <>
@@ -56,7 +55,7 @@ const UserInfo = ({ id }) => {
             <button onClick={() => {
               handleReturnToUsersPage();
             }}>
-              Все пользователи
+              Изменить
             </button>
           </div>
         </div>
@@ -65,8 +64,8 @@ const UserInfo = ({ id }) => {
   );
 };
 
-UserInfo.propTypes = {
+UserPage.propTypes = {
   id: PropTypes.string.isRequired
 };
 
-export default UserInfo;
+export default UserPage;

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Bookmark from './bookmark';
-import QualitiesList from './qualitiesList';
-import Table from './table';
+import Bookmark from '../common/bookmark';
+import Qualities from './qualities';
+import Table from '../common/table';
 
 const UsersTable = ({ users, onSort, selectedSort, onDeleteUser, onToggleBookMark }) => {
   const columns = {
@@ -10,7 +10,7 @@ const UsersTable = ({ users, onSort, selectedSort, onDeleteUser, onToggleBookMar
     qualities: {
       name: 'Качества',
       component: (user) => (
-        <QualitiesList qualities={user.qualities}/>
+        <Qualities qualities={user.qualities}/>
       )
     },
     profession: { path: 'profession.name', name: 'Профессия' },
