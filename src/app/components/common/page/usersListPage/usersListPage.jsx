@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from './pagination';
-import { paginate } from '../utils/paginate';
-import api from '../api';
-import GroupList from './groupList';
-import SearchStatus from './searchStatus';
-import UsersTable from './usersTable';
+import Pagination from '../../pagination';
+import { paginate } from '../../../../utils/paginate';
+import api from '../../../../api';
+import GroupList from '../../groupList';
+import SearchStatus from '../../../ui/searchStatus';
+import UsersTable from '../../../ui/usersTable';
 import _ from 'lodash';
-import Loader from './loader';
-import TextField from './textField';
+import Loader from '../../../ui/loader';
+import TextField from '../../form/textField';
 
-const UsersList = () => {
+const UsersListPage = () => {
   const pageSize = 6;
 
   const [isInitialisation, setIsInitialisation] = useState(false); // Заглушка для Loader
   const [currentPage, setCurrentPage] = useState(1);
-  const [professions, setProfession] = useState();
+  const [professions, setProfession] = useState({});
   const [selectedProfs, setSelectedProfs] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
 
@@ -24,30 +24,21 @@ const UsersList = () => {
 
   useEffect(() => {
     api.users.fetchAll().then((dataOfUsers) => {
-      if (Array.isArray(dataOfUsers)) {
-        setUsers(dataOfUsers);
-        setIsInitialisation(true); // Заглушка под успешную инициализацию
-      } else {
-        setUsers([]); // Заглушка на случай, если придет Объект
-      }
+      setUsers(dataOfUsers);
+      setIsInitialisation(true);
     });
   }, []);
 
   useEffect(() => {
-    api.professions.fetchAll().then((dataOfProfessions) => {
-      if (Array.isArray(dataOfProfessions)) {
-        setProfession(dataOfProfessions);
-      } else {
-        setProfession([]); // Заглушка на случай, если придет Объект
-      }
-    });
+    api.professions.fetchAll()
+      .then(dataOfProfessions => setProfession(dataOfProfessions));
   }, [isInitialisation]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedProfs]);
 
-  const handleSearchChange = ({ target }) => {
+  const handleSearchChange = (target) => {
     const allowSymbolsRegEx = /[^а-яА-Яa-zA-Z0-9\s]+/gi;
     const formatSymbols = target.value.replace(allowSymbolsRegEx, '');
     setSearchData(prevState => ({
@@ -58,12 +49,6 @@ const UsersList = () => {
       clearFilter();
     }
   };
-
-  /*
-  useEffect(() => {
-    clearFilter();
-  }, [searchData]);
-   */
 
   const handleDelete = (userId) => {
     setUsers(users.filter(user => user._id !== userId));
@@ -100,8 +85,11 @@ const UsersList = () => {
   }
 
   const clearFilter = () => {
-    setSelectedProfs();
-    setSearchData({ search: '' });
+    if (!!searchData.search) {
+      setSearchData({ search: '' });
+    } else {
+      setSelectedProfs();
+    }
   };
 
   const handleProfessionSelect = (item) => {
@@ -116,7 +104,7 @@ const UsersList = () => {
   return !isInitialisation
     ? <Loader type={'1'}/>
     : <div className='d-flex'>
-      {!professions?.length
+      {!professions
         ? <Loader type={'2'}/>
         : <div className='d-flex flex-column flex-shrink-0 p-3'>
           <GroupList
@@ -165,4 +153,4 @@ const UsersList = () => {
     </div>;
 };
 
-export default UsersList;
+export default UsersListPage;

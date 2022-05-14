@@ -1,5 +1,5 @@
 import React from 'react';
-import { getEndOfWord } from '../utils/utils';
+import { getEndOfWord } from '../../utils/utils';
 import PropTypes from 'prop-types';
 
 const SearchStatus = ({ count, users, isSearching }) => {

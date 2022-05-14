@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Caret from './caret';
+import Caret from '../../ui/caret';
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
   const handleSort = (item) => {
