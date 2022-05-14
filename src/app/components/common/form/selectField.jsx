@@ -8,9 +8,6 @@ const SelectField = ({ label, value, name, onChange, defaultOption, options, err
   const getInputClasses = () => {
     return 'form-select' + (error ? ' is-invalid' : '');
   };
-  /* const optionsArray = !Array.isArray(options) && typeof options === 'object'
-    ? Object.keys(options).map(optionName => ({ name: options[optionName].name, value: options[optionName]._id }))
-    : options; */
 
   const optionsArray = !Array.isArray(options) && typeof options === 'object'
     ? Object.values(options)
@@ -41,12 +38,6 @@ const SelectField = ({ label, value, name, onChange, defaultOption, options, err
                 {option.label}
               </option>
             ))
-            /* optionsArray && optionsArray.map(option => (
-              <option
-                value={option.value}
-                key={option.value}
-              >{option.name}</option>
-            )) */
           }
         </select>
         {error && <div className="invalid-feedback">

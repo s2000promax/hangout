@@ -24,8 +24,6 @@ const RegisterForm = () => {
   }, [data]);
 
   useEffect(() => {
-    /* api.professions.fetchAll().then((dataOfProfessions) => setProfession(dataOfProfessions));
-    api.qualities.fetchAll().then((dataOfQualities) => setQualities(dataOfQualities)); */
     api.professions.fetchAll().then((data) => {
       const professionsList = Object.keys(data).map((professionName) => ({
         label: data[professionName].name,
@@ -59,6 +57,11 @@ const RegisterForm = () => {
         message: 'Profession is required'
       }
     },
+    qualities: {
+      isRequired: {
+        message: 'Qualities is required'
+      }
+    },
     license: {
       isRequired: {
         message: 'License must be confirmed'
@@ -73,7 +76,6 @@ const RegisterForm = () => {
   };
 
   const handleChange = (target) => {
-    console.log('target:', target);
     setDate(prevState => ({
       ...prevState,
       [target.name]: target.value
@@ -118,7 +120,6 @@ const RegisterForm = () => {
       qualities: getQualities(qualities)
     });
   };
-  console.log('dq:', data.qualities);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -165,6 +166,7 @@ const RegisterForm = () => {
           defaultValue={data.qualities}
           onChange={handleChange}
           label='Choose your qualities'
+          error={errors.qualities}
         />
         <CheckBoxField
           name='license'

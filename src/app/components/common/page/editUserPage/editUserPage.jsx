@@ -111,6 +111,11 @@ const EditUserPage = () => {
       isRequired: {
         message: 'Profession is required'
       }
+    },
+    qualities: {
+      isRequired: {
+        message: 'Qualities is required'
+      }
     }
   };
 
@@ -171,7 +176,7 @@ const EditUserPage = () => {
                   onChange={handleChange}
                   defaultOption='Choose...'
                   options={professionsList}
-                  error={''/* errors.profession */}
+                  error={errors.profession}
                 />
                 <RadioField
                   options={[
@@ -183,7 +188,6 @@ const EditUserPage = () => {
                   name='sex'
                   onChange={handleChange}
                   label='Choose your gender'
-
                 />
                 <MultiSelectField
                   options={qualitiesList}
