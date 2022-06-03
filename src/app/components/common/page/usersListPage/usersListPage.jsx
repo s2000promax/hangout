@@ -1,38 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '../../pagination';
 import { paginate } from '../../../../utils/paginate';
-import api from '../../../../api';
 import GroupList from '../../groupList';
 import SearchStatus from '../../../ui/searchStatus';
 import UsersTable from '../../../ui/usersTable';
 import _ from 'lodash';
 import Loader from '../../../ui/loader';
 import TextField from '../../form/textField';
+import { useUser } from '../../../../hooks/useUsers';
+import { useProfessions } from '../../../../hooks/useProfession';
 
 const UsersListPage = () => {
   const pageSize = 6;
 
-  const [isInitialisation, setIsInitialisation] = useState(false); // Заглушка для Loader
   const [currentPage, setCurrentPage] = useState(1);
-  const [professions, setProfession] = useState({});
   const [selectedProfs, setSelectedProfs] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
-
-  const [users, setUsers] = useState([]);
-
   const [searchData, setSearchData] = useState({ search: '' });
 
-  useEffect(() => {
-    api.users.fetchAll().then((dataOfUsers) => {
-      setUsers(dataOfUsers);
-      setIsInitialisation(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    api.professions.fetchAll()
-      .then(dataOfProfessions => setProfession(dataOfProfessions));
-  }, [isInitialisation]);
+  const { users } = useUser();
+  const { professions } = useProfessions();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -51,16 +38,18 @@ const UsersListPage = () => {
   };
 
   const handleDelete = (userId) => {
-    setUsers(users.filter(user => user._id !== userId));
+    // setUsers(users.filter(user => user._id !== userId));
+    console.log(userId);
   };
 
   const handleToggleBookmark = (userId) => {
-    setUsers(users.map(user => {
-      if (user._id === userId) {
-        user.bookmark = !user.bookmark;
-      }
-      return user;
-    }));
+    // setUsers(users.map(user => {
+    //   if (user._id === userId) {
+    //     user.bookmark = !user.bookmark;
+    //   }
+    //   return user;
+    // }));
+    console.log(userId);
   };
 
   const handlePageChange = (pageIndex) => {
@@ -101,56 +90,58 @@ const UsersListPage = () => {
     setSortBy(item);
   };
 
-  return !isInitialisation
-    ? <Loader type={'1'}/>
-    : <div className='d-flex'>
-      {!professions
-        ? <Loader type={'2'}/>
-        : <div className='d-flex flex-column flex-shrink-0 p-3'>
-          <GroupList
-            selectedItem={selectedProfs}
-            items={professions}
-            onItemSelect={handleProfessionSelect}
-          />
-          <button
-            className='btn btn-secondary mt-2'
-            onClick={clearFilter}
-          >
-            Очистить
-          </button>
-        </div>
-      }
-      <div className='d-flex flex-column'>
-        <SearchStatus {...{ count, users, isSearching: !!searchData.search }}/>
-        <TextField
-          label=''
-          type='text'
-          name='search'
-          placeholder='Search...'
-          value={searchData.search}
-          onChange={handleSearchChange}
-        />
-        {count > 0
-          && <>
-            <UsersTable
-              {...{
-                users: userCrop,
-                onSort: handleSort,
-                selectedSort: sortBy,
-                onDeleteUser: handleDelete,
-                onToggleBookMark: handleToggleBookmark
-              }}
+  return (
+    <>
+      <div className='d-flex'>
+        {!professions
+          ? <Loader type={'2'}/>
+          : <div className='d-flex flex-column flex-shrink-0 p-3'>
+            <GroupList
+              selectedItem={selectedProfs}
+              items={professions}
+              onItemSelect={handleProfessionSelect}
             />
-          </>
+            <button
+              className='btn btn-secondary mt-2'
+              onClick={clearFilter}
+            >
+              Очистить
+            </button>
+          </div>
         }
-        <Pagination
-          itemsCount={count}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+        <div className='d-flex flex-column'>
+          <SearchStatus {...{ count, users, isSearching: !!searchData.search }}/>
+          <TextField
+            label=''
+            type='text'
+            name='search'
+            placeholder='Search...'
+            value={searchData.search}
+            onChange={handleSearchChange}
+          />
+          {count > 0
+            && <>
+                <UsersTable
+                  {...{
+                    users: userCrop,
+                    onSort: handleSort,
+                    selectedSort: sortBy,
+                    onDeleteUser: handleDelete,
+                    onToggleBookMark: handleToggleBookmark
+                  }}
+                />
+            </>
+          }
+          <Pagination
+            itemsCount={count}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
-    </div>;
+    </>
+  );
 };
 
 export default UsersListPage;
