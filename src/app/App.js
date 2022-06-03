@@ -5,20 +5,27 @@ import Main from './layouts/main';
 import Login from './layouts/login';
 import Users from './layouts/users';
 import Error404 from './components/common/page/error404';
-import EditUserPage from './components/common/page/editUserPage';
+import { ToastContainer } from 'react-toastify';
+import { ProfessionProvider } from './hooks/useProfession';
+import { QualityProvider } from './hooks/useQuality';
+
 const App = () => {
   return (
     <>
-      <NavBar />
+      <NavBar/>
+      <ProfessionProvider>
+        <QualityProvider>
+          <Switch>
+            <Route path='/users/:userId?/:edit?/' component={Users}/>
+            <Route path='/login/:type?' component={Login}/>
+            <Route path='/404' component={Error404}/>
+            <Route path='/' exact component={Main}/>
+            <Redirect to='/'/>
+          </Switch>
+        </QualityProvider>
+      </ProfessionProvider>
 
-      <Switch>
-        <Route path='/' exact component={Main} />
-        <Route path='/login/:type?' component={Login} />
-        <Route path='/users/:userId/edit' exact component={EditUserPage} />
-        <Route path='/users/:userId?' component={Users} />
-        <Route path='/404' component={Error404} />
-        <Redirect to='/404' />
-      </Switch>
+      <ToastContainer/>
 
     </>
   );

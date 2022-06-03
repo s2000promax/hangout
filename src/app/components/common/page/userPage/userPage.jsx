@@ -1,27 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../../../../api';
+// import api from '../../../../api';
 import Qualities from '../../../ui/qualities/qualities';
-import Loader from '../../../ui/loader';
+// import Loader from '../../../ui/loader';
 import CommentsList from '../../comments/commentsList';
+import { useUser } from '../../../../hooks/useUsers';
 
 const UserPage = ({ id }) => {
   const history = useHistory();
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
+  let user = null;
   const [sortBy, setSortBy] = useState({ path: 'created_at', order: 'asc' });
+  const { getUserById } = useUser();
 
-  useEffect(() => {
-    api.users.getById(id).then((userInfo) => {
-      if (!userInfo) {
-        history.push('/404');
-      } else if (Array.isArray(userInfo)) {
-        setUser({}); // Заглушка на случай, если придет Массив
-      } else {
-        setUser(userInfo);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   api.users.getById(id).then((userInfo) => {
+  //     if (!userInfo) {
+  //       history.push('/404');
+  //     } else if (Array.isArray(userInfo)) {
+  //       setUser({}); // Заглушка на случай, если придет Массив
+  //     } else {
+  //       setUser(userInfo);
+  //     }
+  //   });
+  // }, []);
+
+  if (!getUserById(id)) {
+    history.push('/404');
+  } else {
+    user = getUserById(id);
+  }
 
   const handleReturnToUsersPage = () => {
     history.push(`${id}/edit`);
@@ -38,7 +47,8 @@ const UserPage = ({ id }) => {
       target.classList.replace('text-secondary', 'text-primary');
       target.parentNode.children[1].classList.replace('bi-caret-up-fill', 'bi-caret-up');
       target.parentNode.children[1].classList.replace('text-primary', 'text-secondary');
-    };
+    }
+    ;
   };
   const handleSortDESC = (event) => {
     const { target } = event;
@@ -51,13 +61,12 @@ const UserPage = ({ id }) => {
       target.classList.replace('text-secondary', 'text-primary');
       target.parentNode.children[0].classList.replace('bi-caret-down-fill', 'bi-caret-down');
       target.parentNode.children[0].classList.replace('text-primary', 'text-secondary');
-    };
+    }
+    ;
   };
   return (
     <>
-      {!user?._id
-        ? <Loader/>
-        : <div className="container">
+      {<div className="container">
           <div className="row gutters-sm">
             <div className="col-md-4 mb-3">
               <div className="card mb-3">
@@ -104,10 +113,8 @@ const UserPage = ({ id }) => {
                     {user.qualities
                       .map(q => (
                         <Qualities
-                          color={q.color}
-                          _id={q._id}
-                          name={q.name}
-                          key={q._id}
+                          key={q}
+                          id={q}
                         />
                       ))}
                   </p>
