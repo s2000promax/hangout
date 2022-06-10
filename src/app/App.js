@@ -8,10 +8,14 @@ import Error404 from './components/common/page/error404';
 import { ToastContainer } from 'react-toastify';
 import { ProfessionProvider } from './hooks/useProfession';
 import { QualityProvider } from './hooks/useQuality';
+import AuthProvider from './hooks/useAuth';
+import LoginProvider from './hooks/useLogin';
 
 const App = () => {
   return (
     <>
+      <LoginProvider>
+      <AuthProvider>
       <NavBar/>
       <ProfessionProvider>
         <QualityProvider>
@@ -24,9 +28,10 @@ const App = () => {
           </Switch>
         </QualityProvider>
       </ProfessionProvider>
+      </AuthProvider>
+      </LoginProvider>
 
       <ToastContainer/>
-
     </>
   );
 };

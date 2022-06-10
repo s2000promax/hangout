@@ -18,6 +18,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     getUsers();
   }, []);
+
   useEffect(() => {
     if (error !== null) {
       toast(error);
@@ -31,7 +32,7 @@ export const UserProvider = ({ children }) => {
       setUsers(content);
       setIsLoading(false);
     } catch (error) {
-      errorCatcher();
+      errorCatcher(error);
     }
   };
 
@@ -50,7 +51,7 @@ export const UserProvider = ({ children }) => {
       <UserContext.Provider
         value={{ users, getUserById }}
       >
-        {!isLoading ? children : <Loader type={'1'} />}
+        {!isLoading ? children : <Loader type={'1'}/>}
       </UserContext.Provider>
     </>
   );
