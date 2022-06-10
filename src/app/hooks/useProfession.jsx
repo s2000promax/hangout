@@ -18,6 +18,7 @@ export const ProfessionProvider = ({ children }) => {
   useEffect(() => {
     getProfessionsList();
   }, []);
+
   useEffect(() => {
     if (error !== null) {
       toast(error);
@@ -31,7 +32,7 @@ export const ProfessionProvider = ({ children }) => {
       setProfession(content);
       setLoading(false);
     } catch (error) {
-      errorCatcher();
+      errorCatcher(error);
     }
   };
 
@@ -50,7 +51,7 @@ export const ProfessionProvider = ({ children }) => {
       <ProfessionContext.Provider
         value={{ isLoading, professions, getProfession }}
       >
-        {!isLoading ? children : <Loader type={'1'} />}
+        {!isLoading ? children : <Loader type={'1'}/>}
       </ProfessionContext.Provider>
     </>
   );

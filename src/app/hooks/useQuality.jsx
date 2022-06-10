@@ -18,6 +18,7 @@ export const QualityProvider = ({ children }) => {
   useEffect(() => {
     getQualitiesList();
   }, []);
+
   useEffect(() => {
     if (error !== null) {
       toast(error);
@@ -31,7 +32,7 @@ export const QualityProvider = ({ children }) => {
       setQualities(content);
       setLoading(false);
     } catch (error) {
-      errorCatcher();
+      errorCatcher(error);
     }
   };
 
@@ -50,7 +51,7 @@ export const QualityProvider = ({ children }) => {
       <QualityContext.Provider
         value={{ isLoading, qualities, getQuality }}
       >
-        {!isLoading ? children : <Loader type={'1'} />}
+        {!isLoading ? children : <Loader type={'1'}/>}
       </QualityContext.Provider>
     </>
   );
