@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import TextField from '../common/form/textField';
 import { validator } from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useLogin } from '../../hooks/useLogin';
+import { useAuth } from '../../hooks/useAuth';
 import { useHistory } from 'react-router-dom';
 // import * as yup from 'yup';
 
 const LoginForm = () => {
   const history = useHistory();
 
-  const { singIn } = useLogin();
+  const { singIn } = useAuth();
   const [data, setDate] = useState({
     email: '', password: '', stayOn: false
   });
@@ -68,7 +68,9 @@ const LoginForm = () => {
         ...data
       });
       console.log(data);
-      history.push('/');
+      history.push(history.location.state
+        ? history.location.state.from.pathname
+        : '/');
     } catch (error) {
       setErrors(error);
     }

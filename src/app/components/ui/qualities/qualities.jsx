@@ -4,7 +4,6 @@ import { useQuality } from '../../../hooks/useQuality';
 
 const Qualities = ({ id }) => {
   const { getQuality } = useQuality();
-  console.log(getQuality(id));
   const { name, color, _id } = getQuality(id);
   return (
     <span

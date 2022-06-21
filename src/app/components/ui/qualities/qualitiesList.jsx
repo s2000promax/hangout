@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Qualities from './qualities';
 
-const QualitiesList = ({ ids }) => {
+const QualitiesList = ({ qualities }) => {
   return (
     <>
-      {ids.map((id) => (
+      {qualities.map((id) => (
           <Qualities
             key={id}
             id={id}
@@ -16,7 +16,7 @@ const QualitiesList = ({ ids }) => {
 };
 
 QualitiesList.propTypes = {
-  ids: PropTypes.array
+  qualities: PropTypes.array
 };
 
 export default QualitiesList;

@@ -5,10 +5,10 @@ import GroupList from '../../groupList';
 import SearchStatus from '../../../ui/searchStatus';
 import UsersTable from '../../../ui/usersTable';
 import _ from 'lodash';
-import Loader from '../../../ui/loader';
 import TextField from '../../form/textField';
 import { useUser } from '../../../../hooks/useUsers';
 import { useProfessions } from '../../../../hooks/useProfession';
+import { useAuth } from '../../../../hooks/useAuth';
 
 const UsersListPage = () => {
   const pageSize = 6;
@@ -18,8 +18,9 @@ const UsersListPage = () => {
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [searchData, setSearchData] = useState({ search: '' });
 
+  const { currentUser } = useAuth();
   const { users } = useUser();
-  const { professions } = useProfessions();
+  const { isLoading: professionLoading, professions } = useProfessions();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -57,13 +58,17 @@ const UsersListPage = () => {
   };
 
   const searchingRegExp = new RegExp(searchData.search, 'gi');
-  const filteredUsers = selectedProfs
-    ? users.filter((user) =>
-      JSON.stringify(user.profession) === JSON.stringify(selectedProfs))
-    : !!searchData.search
-        ? users.filter((user) => searchingRegExp.test(user.name))
-        : users;
 
+  function filterUsers(data) {
+    const filteredUsers = selectedProfs
+      ? data.filter((user) =>
+        JSON.stringify(user.profession) === JSON.stringify(selectedProfs))
+      : !!searchData.search
+          ? data.filter((user) => searchingRegExp.test(user.name))
+          : data;
+    return filteredUsers.filter(user => user._id !== currentUser._id);
+  }
+  const filteredUsers = filterUsers(users);
   const count = filteredUsers.length;
   const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
 
@@ -93,9 +98,8 @@ const UsersListPage = () => {
   return (
     <>
       <div className='d-flex'>
-        {!professions
-          ? <Loader type={'2'}/>
-          : <div className='d-flex flex-column flex-shrink-0 p-3'>
+        {professions && !professionLoading && (
+          <div className='d-flex flex-column flex-shrink-0 p-3'>
             <GroupList
               selectedItem={selectedProfs}
               items={professions}
@@ -108,6 +112,7 @@ const UsersListPage = () => {
               Очистить
             </button>
           </div>
+        )
         }
         <div className='d-flex flex-column'>
           <SearchStatus {...{ count, users, isSearching: !!searchData.search }}/>
@@ -121,15 +126,15 @@ const UsersListPage = () => {
           />
           {count > 0
             && <>
-                <UsersTable
-                  {...{
-                    users: userCrop,
-                    onSort: handleSort,
-                    selectedSort: sortBy,
-                    onDeleteUser: handleDelete,
-                    onToggleBookMark: handleToggleBookmark
-                  }}
-                />
+              <UsersTable
+                {...{
+                  users: userCrop,
+                  onSort: handleSort,
+                  selectedSort: sortBy,
+                  onDeleteUser: handleDelete,
+                  onToggleBookMark: handleToggleBookmark
+                }}
+              />
             </>
           }
           <Pagination
