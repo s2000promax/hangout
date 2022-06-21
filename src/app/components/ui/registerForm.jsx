@@ -18,7 +18,13 @@ const RegisterForm = () => {
   const { qualities } = useQuality();
 
   const [data, setDate] = useState({
-    email: '', password: '', profession: '', sex: 'male', qualities: [], license: false
+    email: '',
+    password: '',
+    profession: '',
+    sex: 'male',
+    name: '',
+    qualities: [],
+    license: false
   });
   const [errors, setErrors] = useState({});
 
@@ -39,6 +45,9 @@ const RegisterForm = () => {
   const validatorConfig = {
     email: {
       isRequired: { message: 'Email is required' }, isEmail: { message: 'Email incorrect' }
+    },
+    name: {
+      isRequired: { message: 'Name is required' }, min: { message: 'Password must have 3 symbols more', value: 3 }
     },
     password: {
       isRequired: { message: 'Password is required' },
@@ -103,6 +112,14 @@ const RegisterForm = () => {
         value={data.email}
         onChange={handleChange}
         error={errors.email}
+      />
+      <TextField
+        label='Name'
+        type='text'
+        name='name'
+        value={data.name}
+        onChange={handleChange}
+        error={errors.name}
       />
       <TextField
         label='Password'

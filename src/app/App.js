@@ -9,27 +9,27 @@ import { ToastContainer } from 'react-toastify';
 import { ProfessionProvider } from './hooks/useProfession';
 import { QualityProvider } from './hooks/useQuality';
 import AuthProvider from './hooks/useAuth';
-import LoginProvider from './hooks/useLogin';
+import ProtectedRoute from './components/common/protectedRoute';
+import Logout from './layouts/logout';
 
 const App = () => {
   return (
     <>
-      <LoginProvider>
       <AuthProvider>
       <NavBar/>
       <ProfessionProvider>
         <QualityProvider>
           <Switch>
-            <Route path='/users/:userId?/:edit?/' component={Users}/>
-            <Route path='/login/:type?' component={Login}/>
-            <Route path='/404' component={Error404}/>
-            <Route path='/' exact component={Main}/>
+            <ProtectedRoute path='/users/:userId?/:edit?/' component={Users} />
+            <Route path='/login/:type?' component={Login} />
+            <Route path='/404' component={Error404} />
+            <Route path='/' exact component={Main} />
+            <Route path='/logout' component={Logout} />
             <Redirect to='/'/>
           </Switch>
         </QualityProvider>
       </ProfessionProvider>
       </AuthProvider>
-      </LoginProvider>
 
       <ToastContainer/>
     </>

@@ -4,20 +4,37 @@ import Bookmark from '../common/bookmark';
 import Qualities from './qualities';
 import Table from '../common/table';
 import Profession from './profession';
+import { Link } from 'react-router-dom';
 
 const UsersTable = ({ users, onSort, selectedSort, onDeleteUser, onToggleBookMark }) => {
   const columns = {
-    name: { path: 'name', name: 'Имя' },
+    name: {
+      path: 'name',
+      name: 'Имя',
+      component: (user) => (
+        <Link to={`/users/${user._id}`}>{user.name}</Link>
+      )
+    },
     qualities: {
       name: 'Качества',
       component: (user) => (
-          <Qualities ids={user.qualities}/>
+        <Qualities qualities={user.qualities}/>
       )
     },
-    // profession: { path: 'profession.name', name: 'Профессия' },
-    profession: { name: 'Профессия', component: (user) => <Profession id={user.profession}/> },
-    completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
-    rate: { path: 'rate', name: 'Оценка' },
+    profession: {
+      name: 'Профессия',
+      component: (user) => (
+        <Profession id={user.profession}/>
+      )
+    },
+    completedMeetings: {
+      path: 'completedMeetings',
+      name: 'Встретился, раз'
+    },
+    rate: {
+      path: 'rate',
+      name: 'Оценка'
+    },
     bookmark: {
       path: 'bookmark',
       name: 'Избранное',
