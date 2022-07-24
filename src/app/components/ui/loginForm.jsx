@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import TextField from '../common/form/textField';
 import { validator } from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useAuth } from '../../hooks/useAuth';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthError, login } from '../../store/users';
 // import * as yup from 'yup';
 
 const LoginForm = () => {
   const history = useHistory();
 
-  const { singIn } = useAuth();
+  const dispatch = useDispatch();
+  const loginError = useSelector(getAuthError());
+  console.log('###-', loginError);
+
   const [data, setDate] = useState({
     email: '', password: '', stayOn: false
   });
@@ -57,23 +61,16 @@ const LoginForm = () => {
 
   const isValid = !Object.keys(errors).length;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const isValid = validate();
     if (!isValid) {
-      console.log(data);
+      return;
     }
-    try {
-      await singIn({
-        ...data
-      });
-      console.log(data);
-      history.push(history.location.state
-        ? history.location.state.from.pathname
-        : '/');
-    } catch (error) {
-      setErrors(error);
-    }
+    const redirect = history.location.state
+      ? history.location.state.from.pathname
+      : '/';
+    dispatch(login({ payload: data, redirect }));
   };
 
   return (<>
@@ -101,6 +98,7 @@ const LoginForm = () => {
       >
         Stay On
       </CheckBoxField>
+      {loginError && <p className='text-danger'>{loginError}</p>}
       <button
         className='btn btn-primary w-100 mx-auto'
         type='submit'

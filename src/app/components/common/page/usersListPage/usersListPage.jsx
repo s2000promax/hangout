@@ -6,9 +6,9 @@ import SearchStatus from '../../../ui/searchStatus';
 import UsersTable from '../../../ui/usersTable';
 import _ from 'lodash';
 import TextField from '../../form/textField';
-import { useUser } from '../../../../hooks/useUsers';
-import { useProfessions } from '../../../../hooks/useProfession';
-import { useAuth } from '../../../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getProfessions, getProfessionsLoadingStatus } from '../../../../store/professions';
+import { getCurrentUserId, getUsersList } from '../../../../store/users';
 
 const UsersListPage = () => {
   const pageSize = 6;
@@ -18,9 +18,10 @@ const UsersListPage = () => {
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [searchData, setSearchData] = useState({ search: '' });
 
-  const { currentUser } = useAuth();
-  const { users } = useUser();
-  const { isLoading: professionLoading, professions } = useProfessions();
+  const currentUserId = useSelector(getCurrentUserId());
+  const users = useSelector(getUsersList());
+  const professions = useSelector(getProfessions());
+  const professionLoading = useSelector(getProfessionsLoadingStatus());
 
   useEffect(() => {
     setCurrentPage(1);
@@ -66,7 +67,7 @@ const UsersListPage = () => {
       : !!searchData.search
           ? data.filter((user) => searchingRegExp.test(user.name))
           : data;
-    return filteredUsers.filter(user => user._id !== currentUser._id);
+    return filteredUsers.filter(user => user._id !== currentUserId);
   }
   const filteredUsers = filterUsers(users);
   const count = filteredUsers.length;
