@@ -5,17 +5,15 @@ import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useProfessions } from '../../hooks/useProfession';
-import { useQuality } from '../../hooks/useQuality';
-import { useAuth } from '../../hooks/useAuth';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getQualities } from '../../store/qualities';
+import { getProfessions } from '../../store/professions';
+import { singUp } from '../../store/users';
 
 const RegisterForm = () => {
-  const history = useHistory();
-
-  const { singUp } = useAuth();
-  const { professions } = useProfessions();
-  const { qualities } = useQuality();
+  const dispatch = useDispatch();
+  const professions = useSelector(getProfessions());
+  const qualities = useSelector(getQualities());
 
   const [data, setDate] = useState({
     email: '',
@@ -86,24 +84,18 @@ const RegisterForm = () => {
 
   const isValid = !Object.keys(errors).length;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const isValid = validate();
     if (!isValid) {
       return;
     }
-
-    try {
-      await singUp({
-        ...data,
-        qualities: data.qualities.map(quality => quality.value)
-      });
-      history.push('/');
-    } catch (error) {
-      setErrors(error);
-    }
+    dispatch(singUp({
+      ...data,
+      qualities: data.qualities.map(quality => quality.value)
+    }));
   };
-  return (<>`
+  return (<>
     <form onSubmit={handleSubmit}>
       <TextField
         label='Email'

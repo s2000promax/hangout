@@ -6,16 +6,19 @@ import SelectField from '../../form/selectField';
 import RadioField from '../../form/radioField';
 import MultiSelectField from '../../form/multiSelectField';
 import { validator } from '../../../../utils/validator';
-import { useProfessions } from '../../../../hooks/useProfession';
-import { useQuality } from '../../../../hooks/useQuality';
-import { useAuth } from '../../../../hooks/useAuth';
+import { getQualities, getQualitiesLoadingStatus } from '../../../../store/qualities';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfessions } from '../../../../store/professions';
+import { getCurrentUserData, updateUser } from '../../../../store/users';
 
 const EditUserPage = () => {
-  const { updateAccount, currentUser } = useAuth();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUserData());
   const { userId } = useParams();
   const history = useHistory();
-  const { professions } = useProfessions();
-  const { qualities } = useQuality();
+  const professions = useSelector(getProfessions());
+  const qualities = useSelector(getQualities());
+  const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -109,8 +112,19 @@ const EditUserPage = () => {
     if (!isValid) {
       return;
     }
+    dispatch(
+      updateUser({
+        _id: currentUser._id,
+        image: currentUser.image,
+        ...userData,
+        qualities: userData.qualities.map(quality => quality.value),
+        completedMeetings: currentUser.completedMeetings,
+        license: currentUser.license,
+        rate: currentUser.rate
+      })
+    );
 
-    try {
+    /* try {
       await updateAccount({
         _id: currentUser._id,
         image: currentUser.image,
@@ -123,12 +137,11 @@ const EditUserPage = () => {
       history.push(`/users/${userId}`);
     } catch (error) {
       setErrors(error);
-    }
+    } */
   };
-
   return (
     <>
-      {currentUser && userData.qualities.length && (
+      {currentUser && !qualitiesLoading && (
         <div className='container mt-5'>
           <div className='row'>
             <div className='col-md-6 offset-md-3 shadow p-4'>
