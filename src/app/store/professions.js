@@ -37,13 +37,11 @@ function isOutDated(date) {
 
 export const loadProfessionsList = () => async (dispatch, getState) => {
   const { lastFetch } = getState().professions;
-  console.log(lastFetch);
   if (isOutDated(lastFetch)) {
     dispatch(professionRequested());
 
     try {
       const { content } = await professionService.fetchAll();
-      console.log(content);
       dispatch(professionRecived(content));
     } catch (error) {
       dispatch(professionRequestFiled(error.message));

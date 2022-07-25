@@ -12,7 +12,6 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
   const loginError = useSelector(getAuthError());
-  console.log('###-', loginError);
 
   const [data, setDate] = useState({
     email: '', password: '', stayOn: false

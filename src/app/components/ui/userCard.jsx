@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { getCurrentUserId } from '../../store/users';
 const UserCard = ({ user }) => {
   const history = useHistory();
-  const currentUserId = useSelector(getCurrentUserId);
+  const currentUserId = useSelector(getCurrentUserId());
 
   const handleClick = () => {
     history.push(history.location.pathname + '/edit');
