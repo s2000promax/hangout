@@ -23,7 +23,6 @@ const Comments = () => {
   }, [userId]);
   const isLoading = useSelector(getCommentsLoadingStatus());
   const currentUserId = useSelector(getCurrentUserId);
-  console.log(isLoading);
 
   const handleSubmit = (data) => {
     const comment = {
