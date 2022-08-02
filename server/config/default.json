@@ -1,4 +1,4 @@
 {
   "port": 8080,
-  "mongoUri": "mongodb+srv://admin3d:2348eV9XXt1OHPtL@cluster0.ajre406.mongodb.net/app?retryWrites=true&w=majority"
+  "mongoUri": "mongodb+srv://admin3d:2348eV9XXt1OHPtL@cluster0.3tktpue.mongodb.net/?retryWrites=true&w=majority"
 }
