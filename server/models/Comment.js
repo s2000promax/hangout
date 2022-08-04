@@ -5,11 +5,13 @@ const schema = new Schema({
     type: String,
     required: true
   },
+  // Who has page with the comment
   pageId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
+  // Who left comment
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
