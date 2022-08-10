@@ -1,38 +1,29 @@
-import React from 'react';
-import { getEndOfWord } from '../../utils/utils';
-import PropTypes from 'prop-types';
-
-const SearchStatus = ({ count, users, isSearching }) => {
-  if (!!count && !!users.length) {
+import React from "react";
+import PropTypes from "prop-types";
+const SearchStatus = ({ length }) => {
+    const renderPhrase = (number) => {
+        const lastOne = Number(number.toString().slice(-1));
+        if (number > 4 && number < 15) {
+            return "человек тусанет";
+        }
+        if (lastOne === 1) return "человек тусанет";
+        if ([2, 3, 4].indexOf(lastOne) >= 0) return "человека тусанут";
+        return "человек тусанет";
+    };
     return (
-      <span
-        className='badge btn-primary m-2 fs-5'
-      >
-        {count} человек{getEndOfWord(count, 'a')} тусан{!getEndOfWord(count, 'end') ? 'ет' : 'ут'} с тобой сегодня
-      </span>
+        <h2>
+            <span
+                className={"badge " + (length > 0 ? "bg-primary" : "bg-danger")}
+            >
+                {length > 0
+                    ? `${length + " " + renderPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
+            </span>
+        </h2>
     );
-  } else if (!count && !!users.length) {
-    return (
-      <span
-        className='badge btn-danger m-2 fs-5'
-      >
-      {!isSearching ? 'В этой категории нет подходящих вариантов для тусовки' : 'Нет совпадений по поиску'}
-    </span>
-    );
-  }
-  return (
-    <span
-      className='badge btn-danger m-2 fs-5'
-    >
-      Никто с тобой не тусанет
-    </span>
-  );
 };
-
 SearchStatus.propTypes = {
-  count: PropTypes.number,
-  users: PropTypes.array,
-  isSearching: PropTypes.bool
+    length: PropTypes.number
 };
 
 export default SearchStatus;

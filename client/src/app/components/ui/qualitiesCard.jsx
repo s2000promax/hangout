@@ -1,9 +1,9 @@
-import React from 'react';
-import Qualities from './qualities';
-import PropTypes from 'prop-types';
+import React from "react";
+import Qualities from "./qualities";
+import PropTypes from "prop-types";
 
 const QualitiesCard = ({ data }) => {
-  return (
+    return (
         <div className="card mb-3">
             <div className="card-body d-flex flex-column justify-content-center text-center">
                 <h5 className="card-title">
@@ -14,10 +14,10 @@ const QualitiesCard = ({ data }) => {
                 </p>
             </div>
         </div>
-  );
+    );
 };
 QualitiesCard.propTypes = {
-  data: PropTypes.array
+    data: PropTypes.array
 };
 
 export default QualitiesCard;
